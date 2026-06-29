@@ -418,6 +418,7 @@ function render() {
       initCardGlows();
       initGSAPScrollAnimations();
       initMagneticEffect();
+      ScrollTrigger.refresh();
     }
   });
 }
@@ -1318,23 +1319,21 @@ function initCounters() {
     const target = parseInt(counter.dataset.target);
     const suffix = counter.dataset.suffix || '';
     const duration = 2.0;
+    const obj = { val: 0 };
 
-    gsap.fromTo(counter, 
-      { textContent: 0 },
-      {
-        textContent: target,
-        duration: duration,
-        ease: 'power3.out',
-        snap: { textContent: 1 },
-        scrollTrigger: {
-          trigger: counter,
-          start: 'top 95%',
-        },
-        onUpdate: function() {
-          counter.textContent = Math.floor(counter.textContent).toLocaleString() + suffix;
-        }
+    gsap.to(obj, {
+      val: target,
+      duration: duration,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: counter,
+        start: 'top 95%',
+        once: true
+      },
+      onUpdate: function() {
+        counter.textContent = Math.floor(obj.val).toLocaleString() + suffix;
       }
-    );
+    });
   });
 }
 
